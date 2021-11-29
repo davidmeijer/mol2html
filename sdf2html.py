@@ -11,12 +11,14 @@ from sys import argv
 def htmlTemplate(sdfString : str, name : str) -> str:
     """Create HTML string.
 
-    Arguments:
-        sdfString (str) -- contents of SDF file as string.
-        name (str) -- name of files canvas snaptshots. 
+    Arguments
+    --------------------------------------------------------------------------
+    sdfString (str) -- contents of SDF file as string.
+    name (str) -- name of files canvas snaptshots. 
 
-    Returns:
-        htmlString (str) -- HTML string for rendering 3D molecule. 
+    Returns
+    --------------------------------------------------------------------------
+    htmlString (str) -- HTML string for rendering 3D molecule. 
     """
     with open('./dependencies/3DMol-min.js', 'r') as js: lib3DMol = js.read()
     with open('./dependencies/html2canvas.js', 'r') as js: libHtml2canvas = js.read()
@@ -48,7 +50,7 @@ def htmlTemplate(sdfString : str, name : str) -> str:
                         "html2canvas(document.getElementById('container-01'),{allowTaint: true, useCORS: true}).then(function (canvas) { "
                             "var anchorTag = document.createElement('a'); "
                             "document.body.appendChild(anchorTag); "
-                            f"anchorTag.download = '{name}.jpg'; "
+                            f"anchorTag.download = '{name}.png'; "
                             "anchorTag.href = canvas.toDataURL(); "
                             "anchorTag.target = '_blank'; "
                             "anchorTag.click(); "

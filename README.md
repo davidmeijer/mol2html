@@ -9,4 +9,4 @@ Small wrapper around [3dmol.js](https://github.com/3dmol/3Dmol.js) and [html2can
 ### Usage
 
 Generate HTML from SDF file:
-```python3 mol2html.py <input.sdf>```
+```python3 sdf2html.py <input.sdf>```
