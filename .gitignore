@@ -1,2 +1,4 @@
 # misc 
 .DS_Store
+build/
+mol2html.egg-info
