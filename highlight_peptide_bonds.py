@@ -16,7 +16,7 @@ def main() -> None:
     pathToSdf = argv[1]
     with open(pathToSdf, 'r') as fo: sdfString = fo.read()
 
-    # Mine SMILES string for amino acid substructures and color them accordingly.
+    # Mine SMILES string for peptide bond substrings and color them red.
     mol = Chem.MolFromMolBlock(sdfString)
     atomStyles = {atom.GetIdx() : {'color' : 'black'} for atom in mol.GetAtoms()}   
     matches = mol.GetSubstructMatches(Chem.MolFromSmiles('C(=O)N'))
