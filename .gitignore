@@ -3,3 +3,4 @@
 build/
 mol2html.egg-info
 __pycache__/
+dist/
