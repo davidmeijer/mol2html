@@ -26,7 +26,7 @@ def main() -> None:
 
     # Compose HTML.
     htmlString = mol2html(Chem.MolToMolBlock(mol), 'daptomycin_snapshot', atomStyles)
-    with open('daptomycin.html', 'w') as foHtml: foHtml.write(htmlString)
+    with open('daptomycin_with_highlighted_peptide_bonds.html', 'w') as foHtml: foHtml.write(htmlString)
 
 if __name__ == '__main__':
     main()
