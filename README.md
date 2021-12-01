@@ -14,4 +14,4 @@ Generate SDF from SMILES string:
 Generate HTML from SDF file:
 ```python3 sdf2html.py <input.sdf>```
 
-Example HTML output can be found [here](https://davidmeijer.com/daptomycin).
+Example HTML output for daptomycin with highlighted amino acids can be found [here](https://davidmeijer.com/daptomycin).
