@@ -15,7 +15,7 @@ def main() -> None:
     pathToSdf = argv[1]
     with open(pathToSdf, 'r') as fo: sdfString = fo.read()
     atomStyles = {}
-    htmlString = mol2html(sdfString, 'snapshot', atomStyles)
+    htmlString = mol2html(sdfString, 'snapshot', atomStyles, True)
     with open('molecule.html', 'w') as foHtml: foHtml.write(htmlString)
 
 if __name__ == '__main__':
