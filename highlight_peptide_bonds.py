@@ -2,7 +2,7 @@
 """
 Author:         David Meijer
 Description:    Generates self-contained interactive 3D molecule HTML with 
-                individual amino acids highlighted.
+                peptide bonds highlighted.
 Usage:          python3 highlight_amino_acids.py <input.sdf>
 Dependencies:   See dependencies folder; mol2html; rdkit
 """
