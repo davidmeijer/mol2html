@@ -7,7 +7,7 @@ Usage:          python3 highlight_peptide_bonds.py <input.sdf>
 Dependencies:   See dependencies folder; mol2html; rdkit
 """
 from sys import argv
-from mol2html import mol2html
+from mol2html import styleSubstructure, mol2html
 from rdkit import Chem
 
 def main() -> None:
@@ -18,11 +18,8 @@ def main() -> None:
 
     # Mine SMILES string for peptide bond substrings and color them red.
     mol = Chem.MolFromMolBlock(sdfString)
-    atomStyles = {atom.GetIdx() : {'color' : 'black'} for atom in mol.GetAtoms()}   
-    matches = mol.GetSubstructMatches(Chem.MolFromSmiles('C(=O)N'))
-    for match in matches: 
-        for atomIdx in match:
-            atomStyles[atomIdx]['color'] = 'red'
+    unmatchedStyle = {atom.GetIdx() : {'color' : 'grey'} for atom in mol.GetAtoms()}  
+    atomStyles = styleSubstructure(mol, 'C(=O)N', {'color' : 'red'}, unmatchedStyle)
 
     # Compose HTML.
     htmlString = mol2html(Chem.MolToMolBlock(mol), 'daptomycin_snapshot', atomStyles)

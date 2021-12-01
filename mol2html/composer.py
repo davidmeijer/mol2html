@@ -2,15 +2,20 @@
 Functions for composing self-contained HTML files describing a 3d 
 molecular depiction using `3dmol.js` en `html2canvas`.
 """
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Tuple, List
 import os.path as osp
 
+Smiles = str
 Serial = int
+StyleDict = Dict[str, Any]
+StyleMap = Dict[Serial, StyleDict]
+Label = Tuple[str, Tuple[float, float, float]]
 
 def _composeHtml(
         molBlock : str, 
         snapshotName : Optional[str] = 'snapshot',
-        style : Optional[Dict[Serial, Dict[str, Any]]] = None,
+        style : Optional[StyleMap] = None,
+        labels : Optional[List[Label]] = None,
         selfContained : Optional[bool] = True
     ) -> str:
     """Create HTML string.
@@ -20,7 +25,9 @@ def _composeHtml(
     molBlock (str) -- mol block string. 
     name (str, optional) -- name of files canvas snaptshots. 
         default: 'snapshot'
-    style (dict, optional) -- atom style for atoms in mol block.
+    style (StyleMap, optional) -- atom style for atoms in mol block.
+        default: None
+    labels (Label list, optional) -- labels with xyz coordinates. 
         default: None
     selfContained (bool, optional) -- if False include dependencies in HTML.
         If True need a working internet connection to render HTML in browser.
@@ -52,6 +59,15 @@ def _composeHtml(
         ]
     else: atomStyles = []
 
+    # Create label strings.
+    if labels != None:
+        labels = [
+            f"viewer.addLabel('{l[0]}', {{position:{{x:{l[1][0]},y:{l[1][1]},z:{l[1][2]}}}, backgroundOpacity: 0.5}}); "
+             for l in labels
+        ]
+    else:
+        labels = []
+
     # Compile HTML string.
     htmlString = (
         "<html>"
@@ -71,8 +87,10 @@ def _composeHtml(
                         "let config = {backgroundColor: 'white'}; "
                         "viewer = $3Dmol.createViewer(element, config); "
                         "let mol = viewer.addModel(data, 'sdf'); "
-                        "mol.setStyle({},{stick:{}}); "+\
+                        "viewer.setStyle({},{stick:{hidden: false, radius: .3}}); "+\
                         ''.join(atomStyles)+\
+                        "console.log(mol.getFrames()); "+\
+                        ''.join(labels)+\
                         "viewer.zoomTo(); "
                         "viewer.render(callback); "
                     "}); "
@@ -97,7 +115,8 @@ def _composeHtml(
 def mol2html(
         molBlock : str, 
         snapshotName : Optional[str] = 'snapshot',
-        style : Optional[Dict[Any, Any]] = None,
+        style : Optional[StyleMap] = None,
+        labels : Optional[List[Label]] = None,
         selfContained : Optional[bool] = True
     ) -> str:
     """Compose HTML with interactive 3d molecular representation.
@@ -107,7 +126,9 @@ def mol2html(
     molBlock (str) -- mol block string. 
     name (str, optional) -- name of files canvas snaptshots. 
         default: 'snapshot'
-    style (dict, optional) -- atom style for atoms in mol block.
+    style (StyleMap, optional) -- atom style for atoms in mol block.
+        default: None
+    labels (Label list, optional) -- labels with xyz coordinates. 
         default: None
     selfContained (bool, optional) -- if False include dependencies in HTML.
         If True need a working internet connection to render HTML in browser.
@@ -118,4 +139,4 @@ def mol2html(
     --------------------------------------------------------------------------
     htmlString (str) -- HTML string for rendering 3D molecule. 
     """
-    return _composeHtml(molBlock, snapshotName, style, selfContained)
+    return _composeHtml(molBlock, snapshotName, style, labels, selfContained)
